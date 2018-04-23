@@ -1,0 +1,7 @@
+.logo-img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+    transition: all .2s ease-in-out;
+}
