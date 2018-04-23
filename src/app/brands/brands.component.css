@@ -1,4 +1,4 @@
-.cell-custom {
+:host /deep/ .cell-custom {
     line-height: 60px;
     font-size: 16px;
 }

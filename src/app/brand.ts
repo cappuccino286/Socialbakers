@@ -1,7 +1,7 @@
 export class Brand {
-  pos: number;
-  brand_name: string;
-  url_page: string;
+  id: number;
+  logo: string;
+  name: string;
   fans: number;
-  images_path: string;
+  url_page: string;
 }

@@ -3,7 +3,7 @@ import {ICellRendererAngularComp} from 'ag-grid-angular';
 
 @Component({
     selector: 'app-logo-renderer',
-    template: `<a [href]="imgForLogo">{{brandName}}</a>`,
+    template: `<a [href]="imgForLogo" target="_blank">{{brandName}}</a>`,
     styleUrls: ['./brand-name-renderer.component.css']
 })
 export class BrandNameRendererComponent implements ICellRendererAngularComp {

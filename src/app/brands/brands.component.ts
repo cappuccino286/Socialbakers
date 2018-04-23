@@ -9,17 +9,12 @@ import { BrandNameRendererComponent } from '../brand-name-renderer/brand-name-re
   styleUrls: ['./brands.component.css']
 })
 export class BrandsComponent implements OnInit {
-  private brands: Brand[];
+  private brands: Brand[] = [];
   private gridApi;
   private gridColumnApi;
-  private cellStyle;
   private gridOptions;
   private columnDefs;
   constructor(private brandService: BrandService) {
-    this.cellStyle = {
-      'line-height': '60px',
-      'font-size': '16px'
-    };
     this.gridOptions = {
       enableSorting: true,
       enableFilter: true,
@@ -27,35 +22,36 @@ export class BrandsComponent implements OnInit {
       rowHeight: 70,
     };
     this.gridOptions.columnDefs = [
-      { headerName: '#', field: 'position', cellStyle: this.cellStyle, width: 50 },
-      { headerName: 'Logo', field: 'logo', cellRenderer: 'logoRenderer', width: 50 },
-      { headerName: 'Name', field: 'name', cellRenderer: 'brandNameRenderer',  cellStyle: this.cellStyle },
-      { headerName: 'Fans', field: 'fans', cellStyle: this.cellStyle, width: 100 },
-      { headerName: '<i class="fab fa-facebook-square"></i>', field: 'url', cellRenderer: 'brandNameRenderer', cellStyle: this.cellStyle }
+      { headerName: '#', field: 'id', cellClass: 'cell-custom', width: 50 },
+      { headerName: 'Logo', field: 'logo', cellRenderer: 'logoRenderer', suppressMenu: 'true', suppressSorting : 'true', width: 50 },
+      { headerName: 'Name', field: 'name', cellRenderer: 'brandNameRenderer',  cellClass: 'cell-custom' },
+      { headerName: 'Fans', field: 'fans', cellClass: 'cell-custom' , width: 100 },
+      { headerName: '<i class="fab fa-facebook-square"></i>', field: 'url_page', cellRenderer: 'brandNameRenderer', cellClass: 'cell-custom' }
     ];
     this.gridOptions.frameworkComponents = {
       logoRenderer: LogoRendererComponent,
       brandNameRenderer: BrandNameRendererComponent
     };
   }
-  ngOnInit() { }
-  getBrands() {
-    this.brandService.getBrands().subscribe(
+  ngOnInit() {
+    this.brandService.runJob().subscribe(data => console.log(data));
+  }
+  getBrands(job_id) {
+    this.brandService.getBrands(job_id).subscribe(
       brands => {
-        this.brands = brands;
-        this.brands.sort(this.compare);
-        const rowsData = [];
-        this.brands.forEach(brand => {
+        brands.forEach(brand => {
+          const logo = brand.images.length > 0 ? brand.image_urls : '';
           const row = {
-            position: brand.pos,
-            logo: brand.image_urls[0],
+            id: +brand.pos,
+            logo: logo,
             name: brand.brand_name,
-            fans: brand.fans,
-            url: brand.url_page
+            fans: +brand.fans,
+            url_page: brand.url_page
           };
-          rowsData.push(row);
+          this.brands.push(row);
         });
-        this.gridApi.setRowData(rowsData);
+        this.brands.sort(this.compare);
+        this.gridApi.setRowData(this.brands);
       }
     );
   }
@@ -63,11 +59,14 @@ export class BrandsComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     params.api.sizeColumnsToFit();
-    this.getBrands();
+    this.brandService.getJobs().subscribe(data => {
+      if (data.jobs.length <= 0) { return; }
+      this.getBrands(data.jobs[0].id);
+    });
   }
   compare(val1, val2) {
-    const pos1 = +val1.pos;
-    const pos2 = +val2.pos;
+    const pos1 = val1.id;
+    const pos2 = val2.id;
     if (pos1 > pos2) {
       return 1;
     }
