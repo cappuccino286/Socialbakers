@@ -10,16 +10,21 @@ const SPIDER_NAME = 'topbrand';
 export class BrandService {
   private brandsUrl = '';
   constructor(private http: HttpClient) { }
-  runJob() {
+  runJob(country: string) {
     const url = 'https://app.scrapinghub.com/api/run.json?apikey=' + API_KEY;
-    const data = 'project=' + PROJECT_ID + '&spider=' + SPIDER_NAME;
+    const data = 'project=' + PROJECT_ID + '&spider=' + SPIDER_NAME + '&country=' + country;
     return this.http.post(url, data, {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
     }).map((res: any) => res);
   }
-  getJobs(): Observable<any> {
+  getJob(job_id: string): Observable<any> {
     const url = 'https://app.scrapinghub.com/api/jobs/list.json?apikey=' + API_KEY + '&project=' + PROJECT_ID +
-     '&spider=' + SPIDER_NAME + '&state=finished';
+     '&spider=' + SPIDER_NAME + '&job=' + job_id;
+    return this.http.get(url).map((res: any) => res);
+  }
+  getInitJob(): Observable<any> {
+    const url = 'https://app.scrapinghub.com/api/jobs/list.json?apikey=' + API_KEY + '&project=' + PROJECT_ID +
+     '&spider=' + SPIDER_NAME;
     return this.http.get(url).map((res: any) => res);
   }
   getBrands(job_id): Observable<any> {

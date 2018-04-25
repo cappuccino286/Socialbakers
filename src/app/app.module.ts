@@ -4,6 +4,7 @@ import { BrandService } from './brand.service';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AgGridModule } from 'ag-grid-angular';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { BrandsComponent } from './brands/brands.component';
@@ -20,6 +21,7 @@ import { BrandNameRendererComponent } from './brand-name-renderer/brand-name-ren
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     AgGridModule.withComponents([LogoRendererComponent, BrandNameRendererComponent])
