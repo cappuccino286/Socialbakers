@@ -82,7 +82,7 @@ export class BrandsComponent implements OnInit {
     params.api.sizeColumnsToFit();
     this.gridApi.showLoadingOverlay();
     this.brandService.getInitJob().subscribe(data => {
-      const jobFrance = data.jobs.find(job => job.spider_args.country === 'france');
+      const jobFrance = data.jobs.find(job => !job.hasOwnProperty('spider_args') || job.spider_args.country === 'france');
       this.getInfoJob(jobFrance.id);
     });
   }
