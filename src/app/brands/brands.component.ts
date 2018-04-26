@@ -14,7 +14,13 @@ export class BrandsComponent implements OnInit {
   private gridColumnApi;
   private gridOptions;
   private columnDefs;
-  private country = 'france';
+  private brandNames = [
+    {name: 'All Brands', val: ''},
+    {name: 'Airlines', val: 'airlines'},
+    {name: 'Alcohol', val: 'alcohol'}];
+  private brandName = this.brandNames[0].val;
+  private countries = ['France', 'Germany', 'Vietnam'];
+  private country = this.countries[0];
   constructor(private brandService: BrandService) {
     this.gridOptions = {
       enableSorting: true,
@@ -40,7 +46,7 @@ export class BrandsComponent implements OnInit {
   }
   runCrawler() {
     this.gridApi.showLoadingOverlay();
-    this.brandService.runJob(this.country).subscribe(data => {
+    this.brandService.runJob(this.brandName, this.country.toLowerCase()).subscribe(data => {
       const job_id = data.jobid;
       this.getInfoJob(job_id);
     });
@@ -98,6 +104,9 @@ export class BrandsComponent implements OnInit {
     return 0;
   }
   changeCountry(evt) {
+    this.runCrawler();
+  }
+  changeBrand(evt) {
     this.runCrawler();
   }
 }

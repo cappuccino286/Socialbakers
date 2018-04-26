@@ -10,9 +10,9 @@ const SPIDER_NAME = 'topbrand';
 export class BrandService {
   private brandsUrl = '';
   constructor(private http: HttpClient) { }
-  runJob(country: string) {
+  runJob(brand: string, country: string) {
     const url = 'https://app.scrapinghub.com/api/run.json?apikey=' + API_KEY;
-    const data = 'project=' + PROJECT_ID + '&spider=' + SPIDER_NAME + '&country=' + country;
+    const data = 'project=' + PROJECT_ID + '&spider=' + SPIDER_NAME + '&brand=' + brand + '&country=' + country;
     return this.http.post(url, data, {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
     }).map((res: any) => res);
