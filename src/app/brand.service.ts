@@ -17,14 +17,10 @@ export class BrandService {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
     }).map((res: any) => res);
   }
-  getJob(job_id: string): Observable<any> {
+  getJob(job_id?: string): Observable<any> {
+    const jobUrl = job_id ? '&job=' + job_id : '';
     const url = 'https://app.scrapinghub.com/api/jobs/list.json?apikey=' + API_KEY + '&project=' + PROJECT_ID +
-     '&spider=' + SPIDER_NAME + '&job=' + job_id;
-    return this.http.get(url).map((res: any) => res);
-  }
-  getInitJob(): Observable<any> {
-    const url = 'https://app.scrapinghub.com/api/jobs/list.json?apikey=' + API_KEY + '&project=' + PROJECT_ID +
-     '&spider=' + SPIDER_NAME;
+     '&spider=' + SPIDER_NAME + jobUrl;
     return this.http.get(url).map((res: any) => res);
   }
   getBrands(job_id): Observable<any> {

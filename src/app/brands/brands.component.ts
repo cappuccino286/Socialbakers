@@ -15,9 +15,9 @@ export class BrandsComponent implements OnInit {
   private gridOptions;
   private columnDefs;
   private brandNames = [
-    {name: 'All Brands', val: ''},
-    {name: 'Airlines', val: 'airlines'},
-    {name: 'Alcohol', val: 'alcohol'}];
+    { name: 'All Brands', val: '' },
+    { name: 'Airlines', val: 'airlines' },
+    { name: 'Alcohol', val: 'alcohol' }];
   private brandName = this.brandNames[0].val;
   private countries = ['France', 'Germany', 'Vietnam'];
   private country = this.countries[0];
@@ -33,6 +33,7 @@ export class BrandsComponent implements OnInit {
       { headerName: 'Logo', field: 'logo', cellRenderer: 'logoRenderer', suppressMenu: 'true', suppressSorting: 'true', width: 50 },
       { headerName: 'Name', field: 'name', cellRenderer: 'brandNameRenderer', cellClass: 'cell-custom' },
       { headerName: 'Fans', field: 'fans', cellClass: 'cell-custom', width: 100 },
+      { headerName: 'Tags', field: 'tags', cellClass: 'cell-custom' },
       { headerName: '<i class="fab fa-facebook-square"></i>', field: 'url_page', cellRenderer: 'brandNameRenderer', cellClass: 'cell-custom' }
     ];
     this.gridOptions.frameworkComponents = {
@@ -73,6 +74,7 @@ export class BrandsComponent implements OnInit {
             logo: logo,
             name: brand.brand_name,
             fans: +brand.fans,
+            tags: brand.tags.toString(),
             url_page: brand.url_page
           };
           this.brands.push(row);
@@ -87,26 +89,19 @@ export class BrandsComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
     params.api.sizeColumnsToFit();
     this.gridApi.showLoadingOverlay();
-    this.brandService.getInitJob().subscribe(data => {
-      const jobFrance = data.jobs.find(job => !job.hasOwnProperty('spider_args') || job.spider_args.country === 'france');
+    this.brandService.getJob().subscribe(data => {
+      const jobFrance = data.jobs.find(job => !job.hasOwnProperty('spider_args') ||
+        job.spider_args.country === 'france' && job.spider_args.brand === '');
+      if (!jobFrance) {
+        this.runCrawler();
+        return;
+      }
       this.getInfoJob(jobFrance.id);
     });
   }
   compare(val1, val2) {
     const pos1 = val1.id;
     const pos2 = val2.id;
-    if (pos1 > pos2) {
-      return 1;
-    }
-    if (pos1 < pos2) {
-      return -1;
-    }
-    return 0;
-  }
-  changeCountry(evt) {
-    this.runCrawler();
-  }
-  changeBrand(evt) {
-    this.runCrawler();
+    return (pos1 > pos2) ? 1 : (pos1 < pos2) ? -1 : 0;
   }
 }

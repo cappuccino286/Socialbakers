@@ -3,5 +3,6 @@ export class Brand {
   logo: string;
   name: string;
   fans: number;
+  tags: string;
   url_page: string;
 }
