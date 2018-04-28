@@ -27,4 +27,8 @@ export class BrandService {
     const url = 'https://storage.scrapinghub.com/items/' + job_id + '?apikey=' + API_KEY + '&format=json';
     return this.http.get(url).map((res: any) => res);
   }
+  getCountries(): Observable<any> {
+    const url = '../assets/countries.json';
+    return this.http.get(url).map((res: any) => res);
+  }
 }

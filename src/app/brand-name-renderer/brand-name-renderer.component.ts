@@ -8,7 +8,7 @@ import {ICellRendererAngularComp} from 'ag-grid-angular';
 })
 export class BrandNameRendererComponent implements ICellRendererAngularComp {
     private params: any;
-    private brandName: string;
+    brandName: string;
     public imgForLogo: string;
 
     agInit(params: any): void {

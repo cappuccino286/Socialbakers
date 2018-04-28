@@ -9,18 +9,17 @@ import { BrandNameRendererComponent } from '../brand-name-renderer/brand-name-re
   styleUrls: ['./brands.component.css']
 })
 export class BrandsComponent implements OnInit {
-  private brands: Brand[] = [];
+  country: string;
+  countries: Array<string>;
+  gridOptions: any;
+  brands: Brand[] = [];
   private gridApi;
   private gridColumnApi;
-  private gridOptions;
-  private columnDefs;
-  private brandNames = [
+  brandNames = [
     { name: 'All Brands', val: '' },
     { name: 'Airlines', val: 'airlines' },
     { name: 'Alcohol', val: 'alcohol' }];
-  private brandName = this.brandNames[0].val;
-  private countries = ['France', 'Germany', 'Vietnam'];
-  private country = this.countries[0];
+  brandName = this.brandNames[0].val;
   constructor(private brandService: BrandService) {
     this.gridOptions = {
       enableSorting: true,
@@ -44,10 +43,14 @@ export class BrandsComponent implements OnInit {
       '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
   }
   ngOnInit() {
+    this.brandService.getCountries().subscribe(countries => {
+      this.countries = countries;
+      this.country = this.countries[0];
+    });
   }
   runCrawler() {
     this.gridApi.showLoadingOverlay();
-    this.brandService.runJob(this.brandName, this.country.toLowerCase()).subscribe(data => {
+    this.brandService.runJob(this.brandName, this.country).subscribe(data => {
       const job_id = data.jobid;
       this.getInfoJob(job_id);
     });
@@ -74,7 +77,7 @@ export class BrandsComponent implements OnInit {
             logo: logo,
             name: brand.brand_name,
             fans: +brand.fans,
-            tags: brand.tags.toString(),
+            tags: brand.hashtags.join(', '),
             url_page: brand.url_page
           };
           this.brands.push(row);
@@ -91,7 +94,7 @@ export class BrandsComponent implements OnInit {
     this.gridApi.showLoadingOverlay();
     this.brandService.getJob().subscribe(data => {
       const jobFrance = data.jobs.find(job => !job.hasOwnProperty('spider_args') ||
-        job.spider_args.country === 'france' && job.spider_args.brand === '');
+        job.spider_args.country === this.countries[0] && job.spider_args.brand === '');
       if (!jobFrance) {
         this.runCrawler();
         return;
