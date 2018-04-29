@@ -3,12 +3,14 @@ import { BrandService } from '../brand.service';
 import { Brand } from '../brand';
 import { LogoRendererComponent } from '../logo-renderer/logo-renderer.component';
 import { BrandNameRendererComponent } from '../brand-name-renderer/brand-name-renderer.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-brands',
   templateUrl: './brands.component.html',
   styleUrls: ['./brands.component.css']
 })
 export class BrandsComponent implements OnInit {
+  socialNetworkSite: string;
   country: string;
   countries: Array<string>;
   gridOptions: any;
@@ -20,7 +22,7 @@ export class BrandsComponent implements OnInit {
     { name: 'Airlines', val: 'airlines' },
     { name: 'Alcohol', val: 'alcohol' }];
   brandName = this.brandNames[0].val;
-  constructor(private brandService: BrandService) {
+  constructor(private brandService: BrandService, private router: Router) {
     this.gridOptions = {
       enableSorting: true,
       enableFilter: true,
@@ -43,6 +45,7 @@ export class BrandsComponent implements OnInit {
       '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
   }
   ngOnInit() {
+    this.socialNetworkSite = this.router.url.slice(1);
     this.brandService.getCountries().subscribe(countries => {
       this.countries = countries;
       this.country = this.countries[0];

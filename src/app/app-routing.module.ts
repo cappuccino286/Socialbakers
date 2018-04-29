@@ -3,8 +3,9 @@ import { BrandsComponent } from './brands/brands.component';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
-    { path: 'dashboard', component: BrandsComponent}
+    { path: '', redirectTo: '/facebook', pathMatch: 'full'},
+    { path: 'facebook', component: BrandsComponent},
+    { path: 'youtube', component: BrandsComponent}
 ];
 
 @NgModule({
