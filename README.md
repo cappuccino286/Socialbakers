@@ -5,7 +5,9 @@
 ## Features
 * Manage your spiders from a dashboard.
 * Visually scrape top brands with a single click
-# Screenshot
+## Screenshot
+
 <image src='./src/assets/screenshot.png'/>
+
 ## Author
 * Sy Hung NGHIEM - University of Technology of Troyes
