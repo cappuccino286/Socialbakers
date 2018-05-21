@@ -33,7 +33,7 @@ export class BrandService {
   }
 
   getCountries(): Observable<any> {
-    const url = '../assets/countries.json';
+    const url = './assets/countries.json';
     return this.http.get(url).map((res: any) => res);
   }
 }
