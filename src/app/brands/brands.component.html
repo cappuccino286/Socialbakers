@@ -1,7 +1,10 @@
-<div class="jumbotron jumbotron-fluid bg-info">
+<div class="jumbotron jumbotron-fluid" [ngClass]="{
+    'header-red': socialNetworkSite === 'youtube',
+    'header-blue': socialNetworkSite === 'facebook'
+  }">
     <div class="container clearfix">
         <div class="float-left">
-            <h1 class="jumbo-header">{{socialNetworkSite || uppercase}} stats</h1>
+            <h1 class="jumbo-header">{{socialNetworkSite | titlecase}} stats</h1>
             <h3 style="color:#cdbfe3">Brand {{brandName}} in {{country | titlecase}}</h3>
         </div>
         <div class="jumbo-header float-right">
@@ -15,13 +18,13 @@
     <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-3">
-            <select class="form-control" [(ngModel)]='brandName' id='brandName' name='brandName' (change)='runCrawler()'>
+            <select class="form-control" [(ngModel)]='brandName' id='brandName' name='brandName' (change)='changeCriteria()'>
                 <option *ngFor='let item of brandNames' [ngValue]="item.val">{{item.name}}</option>
             </select>
         </div>
         <div style="line-height: 38px">in</div>
         <div class="col-sm-3">
-            <select class="form-control" [(ngModel)]='country' id='country' name='country' (change)='runCrawler()'>
+            <select class="form-control" [(ngModel)]='country' id='country' name='country' (change)='changeCriteria()'>
                 <option *ngFor='let item of countries' [ngValue]="item">{{item | titlecase}}</option>
             </select>
         </div>
