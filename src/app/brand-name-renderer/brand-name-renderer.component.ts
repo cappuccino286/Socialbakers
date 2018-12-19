@@ -3,13 +3,13 @@ import {ICellRendererAngularComp} from 'ag-grid-angular';
 
 @Component({
     selector: 'app-logo-renderer',
-    template: `<a [href]="imgForLogo" target="_blank">{{brandName}}</a>`,
+    template: `<a [href]="urlFacebook" target="_blank">{{brandName}}</a>`,
     styleUrls: ['./brand-name-renderer.component.css']
 })
 export class BrandNameRendererComponent implements ICellRendererAngularComp {
     private params: any;
     brandName: string;
-    public imgForLogo: string;
+    public urlFacebook: string;
 
     agInit(params: any): void {
         this.params = params;
@@ -24,6 +24,6 @@ export class BrandNameRendererComponent implements ICellRendererAngularComp {
 
     private setBrandName(params) {
         this.brandName = params.value;
-        this.imgForLogo = this.brandName;
+        this.urlFacebook = params.data.url_page;
     }
 }
